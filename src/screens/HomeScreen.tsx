@@ -57,10 +57,35 @@ export default function  HomeScreen () {
                   <ListItemText sx={{height:'20%'}}>
                   Diary App v1
                   </ListItemText>
-                  <ListItemButton>
+                  <ListItemButton
+                     onClick={async ()=>{
+                      let records = await Controller.getController().readAll();
+                      let csvString = records.map((record: { toCSVRow: () => any; }) => record.toCSVRow()).join('');
+                      csvString = '"date","title","comment"\n'+csvString;                     
+                      var blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+                     
+                          var link = document.createElement("a");
+                          if (link.download !== undefined) { 
+                              var url = URL.createObjectURL(blob);
+                              link.setAttribute("href", url);
+                              link.setAttribute("download", 'export.csv');
+                              link.style.visibility = 'hidden';
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                          
+                      }
+                      setdrawerState(!drawerState);
+                    }}
+                    >
                     <ListItemText primary="Export to CSV" />
                   </ListItemButton>
-                  <ListItemButton>
+                  <ListItemButton 
+                  onClick={async ()=>{
+                    await Controller.getController().deleteAll();
+                    setdrawerState(!drawerState);
+                  }}
+                  >
                     <ListItemText primary="Clear all data" />
                   </ListItemButton>
                 </List>
@@ -86,7 +111,7 @@ export default function  HomeScreen () {
           entries.map((entry) => {
             
           
-          return (<RecordView entryID={entry.id} />)})
+          return (<RecordView entryID={entry.id} key={entry.id} />)})
         }
       </Container>
 

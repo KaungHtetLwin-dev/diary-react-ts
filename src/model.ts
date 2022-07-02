@@ -107,6 +107,15 @@ export default class diaryEntry{
 
     }
 
+    public toCSVRow(){
+
+        
+        let dateString = this.date.getDate()+'.'+this.date.getMonth()+"."+this.date.getFullYear();
+        let csvString = '"'+dateString+'","'+this.title+'","'+this.comment+'"\n';
+        return csvString;
+
+    }
+
   
 
 

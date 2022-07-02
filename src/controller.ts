@@ -8,7 +8,7 @@ export default class Controller{
 
     private constructor(){
 
-        Controller._db = new PouchDB("DairyDB");
+        Controller._db = new PouchDB("DiaryDB");
        
     }
 
@@ -59,6 +59,15 @@ export default class Controller{
             record = await Controller._db.get(entry.id);
             return await Controller._db.remove(record);
         }
+    }
+
+    public async deleteAll(){
+
+     let results : any =  await Controller._db.allDocs();
+    for(let i = 0; i < results.rows.length; i++)
+       Controller._db.remove(results.rows[i].id,results.rows[i].value.rev);       
+    
+
     }
 
 }
