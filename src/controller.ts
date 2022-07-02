@@ -21,9 +21,6 @@ export default class Controller{
     }
 
     public async create(entry:diaryEntry){
-       
-        // console.log('inside create controller');
-        // console.log(entry.toObject());
         return await Controller._db.post(entry.toObject());
 
     }
@@ -37,20 +34,22 @@ export default class Controller{
 
     }
 
-    public async readAll(){
-        
-        
+    public async readAll(){     
         let results : any =  await Controller._db.allDocs({include_docs: true,});
-        // results = await results.rows.map((row: { id: any; }) => row.id);
-        // results = await results.map((result: string) => Controller._db.get(result));
-        //results = results.map((result: any) => diaryEntry.fromObject(result));
         return results.rows.map((row: Record<string,any>) => diaryEntry.fromObject(row.doc));
-       //return results;
+       
 
 
     }
 
     public async update(entry:diaryEntry){
+        let  record,newRecord;
+        if(entry.id){
+            record = await Controller._db.get(entry.id);
+            newRecord = {...entry.toObject(), _rev :record._rev};
+            return await Controller._db.put(newRecord);
+            
+        }
    
     }
 
