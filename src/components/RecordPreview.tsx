@@ -83,16 +83,16 @@ export default function RecordPreview(props: { entryID: any; } ) {
   onTouchEnd={handleOnTouchEnd}
   
   >
-  <CardContent>
-    <Typography sx={{ fontSize: 14 , m:0.5 }} color="text.primary" gutterBottom>
+  <CardContent  sx={{p:0.5}}>
+    <Typography sx={{ fontSize: 14 , m:1 }} color="text.primary" gutterBottom>
     {entry.date.getDate()+'.'+(entry.date.getMonth()+1)+'.'+entry.date.getFullYear()}
     </Typography>
     <Divider/>
-    <Typography sx={{ fontSize: 14 , m:0.5 }} color="text.primary" gutterBottom>
+    <Typography sx={{ fontSize: 14 , m:1 }} color="text.primary" gutterBottom>
     {entry.title}
     </Typography>
     <Divider/>
-    <Typography sx={{ fontSize: 14 , m:0.5 }} color="text.primary" gutterBottom>
+    <Typography sx={{ fontSize: 14 , m:1 }} color="text.primary" gutterBottom>
     {entry.comment}
     </Typography>
    
