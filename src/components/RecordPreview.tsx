@@ -31,7 +31,7 @@ export default function RecordPreview(props: { entryID: any; } ) {
     timerRef.current = setTimeout(() => {
       isLongPress.current = true;
       setAction('longpress');
-      navigate('/view-record/'+entryID)
+      navigate('/edit-record/'+entryID)
 
     }, 500)
   }
