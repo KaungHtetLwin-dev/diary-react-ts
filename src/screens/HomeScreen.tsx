@@ -10,7 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "@mui/material";
-import RecordPreview from "../components/RecordPreview";
+import RecordView from "../components/RecordView";
 import Container from "@mui/material/Container";
 import { List, ListItemButton, ListItemText } from "@mui/material";
 import { useNavigate} from 'react-router-dom';
@@ -86,7 +86,7 @@ export default function  HomeScreen () {
           entries.map((entry) => {
             
           
-          return (<RecordPreview entryID={entry.id} />)})
+          return (<RecordView entryID={entry.id} />)})
         }
       </Container>
 

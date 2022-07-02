@@ -11,7 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "@mui/material";
-import RecordPreview from "../components/RecordPreview";
+import RecordView from "../components/RecordView";
 import Container from "@mui/material/Container";
 import { List, ListItemButton, ListItemText } from "@mui/material";
 import { ArrowBack, ConstructionOutlined, ContactlessOutlined, Save } from '@mui/icons-material';
