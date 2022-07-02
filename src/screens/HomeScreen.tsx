@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,9 +15,20 @@ import Container from "@mui/material/Container";
 import { List, ListItemButton, ListItemText } from "@mui/material";
 import { useNavigate} from 'react-router-dom';
 
-export default function HomeScreen() {
+import Controller from '../controller';
+import diaryEntry from "../model";
+
+export default function  HomeScreen () {
   const [drawerState, setdrawerState] = React.useState(false);
   const  navigate = useNavigate();
+  let initEntries : Array<diaryEntry> = [];
+
+  const [entries,setEntries] = React.useState(initEntries);
+  useEffect(()=> {
+     Controller.getController().readAll().then((data) => setEntries(data) )  ;
+  })
+
+   
 
   return (
     <>
@@ -68,7 +79,7 @@ export default function HomeScreen() {
         </AppBar>
       </Box>
 
-      <div>HomeScreen</div>
+      
       <Fab
         color="primary"
         aria-label="add"
@@ -82,9 +93,12 @@ export default function HomeScreen() {
         <AddIcon />
       </Fab>
       <Container maxWidth="sm">
-        <RecordPreview />
-        <RecordPreview />
-        <RecordPreview />
+        {
+          entries.map((entry) => {
+            
+          
+          return (<RecordPreview entryID={entry.id} />)})
+        }
       </Container>
     </>
   );
