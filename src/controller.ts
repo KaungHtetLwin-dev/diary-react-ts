@@ -1,10 +1,5 @@
-
-
 import  PouchDB from 'pouchdb';
 import diaryEntry from "./model";
-
-
-
 
 export default class Controller{
 
@@ -59,8 +54,12 @@ export default class Controller{
    
     }
 
-    public delete(entry:diaryEntry){
-
+    public async delete(entry:diaryEntry){
+        let  record;
+        if(entry.id){
+            record = await Controller._db.get(entry.id);
+            return await Controller._db.remove(record);
+        }
     }
 
 }

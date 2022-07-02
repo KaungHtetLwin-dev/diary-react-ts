@@ -80,18 +80,7 @@ export default function  HomeScreen () {
       </Box>
 
       
-      <Fab
-        color="primary"
-        aria-label="add"
-        sx={{
-          position: "absolute",
-          bottom: 32,
-          right: 32,
-        }}
-        onClick = {() => navigate('/add-record')}
-      >
-        <AddIcon />
-      </Fab>
+      
       <Container maxWidth="sm">
         {
           entries.map((entry) => {
@@ -100,6 +89,19 @@ export default function  HomeScreen () {
           return (<RecordPreview entryID={entry.id} />)})
         }
       </Container>
+
+      <Fab
+        color="primary"
+        aria-label="add"
+        sx={{
+          position: "fixed",
+          bottom: 32,
+          right: 32,
+        }}
+        onClick = {() => navigate('/add-record',)}
+      >
+        <AddIcon />
+      </Fab>
     </>
   );
 }

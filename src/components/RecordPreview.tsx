@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import Controller from '../controller';
 import diaryEntry from '../model';
 import { useNavigate } from 'react-router-dom';
+import { Divider } from '@mui/material';
 
 export default function RecordPreview(props: { entryID: any; } ) {
 
@@ -28,11 +29,12 @@ export default function RecordPreview(props: { entryID: any; } ) {
 
 <Card variant="outlined" sx={{ my: 2 }} onClick={() => navigate('/view-record/'+entryID)}>
   <CardContent>
-    <Typography sx={{ fontSize: 14 }} color="text.primary" gutterBottom>
-    {entry.title}
+    <Typography sx={{ fontSize: 14 , m:1 }} color="text.primary" gutterBottom>
+    {entry.date.getDate()+'.'+(entry.date.getMonth()+1)+'.'+entry.date.getFullYear()}
     </Typography>
-    <Typography sx={{ fontSize: 14 }} color="text.primary" gutterBottom>
-    {entry.comment}
+    <Divider/>
+    <Typography sx={{ fontSize: 14 , m:1 }} color="text.primary" gutterBottom>
+    {entry.title}
     </Typography>
    
   </CardContent>

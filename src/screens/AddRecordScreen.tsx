@@ -46,7 +46,7 @@ export default function AddRecordScreen() {
     initRecord.comment = '';
     const [record,setRecord] = React.useState (initRecord);
 
-    //setInterval(()=>console.log(record),2500);
+   
 
     
 
@@ -56,13 +56,7 @@ export default function AddRecordScreen() {
 
  
 
-    const handleHightlightChange = (event :any,value:any) =>{
-      
-      // record.hightlight = value;
-      // setRecord(diaryEntry.fromObject(record.toObject()));
-      setRecord({...record,highlight : event.target.value});
-      console.log(record);
-    }
+   
 
   return (
     <>
@@ -103,6 +97,28 @@ export default function AddRecordScreen() {
           renderInput={(params:any) => <TextField {...params} />}
         />
         </LocalizationProvider>
+        
+        <TextField 
+          id="title" 
+          label="Title" 
+          value={record.title}
+          onChange = {(event)=>setRecord({...record, title : event.target.value})}
+        />
+        
+           <TextField 
+            multiline
+            maxRows={10}
+            
+          id="comment"
+          label="Comment"
+          value={record.comment}
+          onChange = {(event)=> setRecord({...record, comment : event.target.value})}
+          
+        />
+        {/*
+        //hide input for fields currently not using
+        //will use in later version of software
+        
         <TextField 
           id="project" 
           label="Project" 
@@ -122,12 +138,6 @@ export default function AddRecordScreen() {
           onChange ={(event,value)=>setRecord({...record,highlight : value})}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="Highlight" />}
-        />
-        <TextField 
-          id="title" 
-          label="Title" 
-          value={record.title}
-          onChange = {(event)=>setRecord({...record, title : event.target.value})}
         />
         <TextField 
           id="time"
@@ -156,24 +166,16 @@ export default function AddRecordScreen() {
           value={record.money}
           onChange = {(event)=> setRecord({...record, money : event.target.value})}
           
-        />
-           <TextField 
-            multiline
-            maxRows={10}
-            
-          id="comment"
-          label="Comment"
-          value={record.comment}
-          onChange = {(event)=> setRecord({...record, comment : event.target.value})}
-          
-        />
+        /> 
+        */}
+
         </Stack>
         </Box>
         <Fab
         color="primary"
         aria-label="add"
         sx={{
-          position: "absolute",
+          position: "fixed",
           bottom: 32,
           right: 32,
         }}
@@ -186,7 +188,7 @@ export default function AddRecordScreen() {
           
           Controller.getController().create(diaryEntry.fromObject(record));
           
-          navigate('/');
+          navigate('/',{ replace: true });
         
         
         }}
