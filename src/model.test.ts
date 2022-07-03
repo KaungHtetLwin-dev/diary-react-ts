@@ -1,9 +1,9 @@
-import diaryEntry from "./model";
+import DiaryEntry from "./model";
 
 
 test('test diaryEntry',()=>{
 
-    let test = new diaryEntry();
+    let test = new DiaryEntry();
     test.date = new Date(2022,5,12);
     test.title = 'Phone';
     test.project = 'Hangout';

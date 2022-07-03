@@ -19,7 +19,7 @@ import { useNavigate} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { stringify } from 'querystring';
 import Controller from "../controller";
-import diaryEntry from '../model';
+import DiaryEntry from '../model';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
@@ -61,9 +61,9 @@ export default function EditRecordScreen() {
       setOpen(false);
     };
   
-    const deleteRecord = () =>{
+    const deleteRecord = async () =>{
   
-       Controller.getController().delete(diaryEntry.fromObject(record));
+       await Controller.getController().delete(DiaryEntry.fromObject(record));
        navigate('/',{ replace: true });
     }
    
@@ -137,79 +137,9 @@ export default function EditRecordScreen() {
   
      
    
-        {/*
         
-        <Box sx={ {m: 2 } }>
-        <Stack spacing={2} >
-        <LocalizationProvider dateAdapter={ AdapterDateFns}>
-        <MobileDatePicker          
-          label="Date"
-          inputFormat="dd/MM/yyyy"
-          value={record.date }
-          onChange={(date)=>  {
-            if(date){
-                record.date = date;
-                setRecord(diaryEntry.fromObject(record.toObject()));
-            }
-        
-        }}
-          renderInput={(params:any) => <TextField {...params} />}
-        />
-        </LocalizationProvider>
-        
-        <TextField 
-          id="title" 
-          label="Title" 
-          value={record.title}
-          onChange = {(event)=>{
-            record.title = event.target.value;
-            setRecord(diaryEntry.fromObject(record.toObject()));
-        
-        }}
-        />
-        
-           <TextField 
-            multiline
-            maxRows={10}
-            
-          id="comment"
-          label="Comment"
-          value={record.comment}
-          onChange = {(event)=> {
-            record.comment = event.target.value;
-                
-            setRecord(diaryEntry.fromObject(record.toObject()));
-            }}
-          
-        />
 
-      <Autocomplete  
-          id="highlight"
-          options={["new","start","finish"]}
-          value={record.hightlight}
-          onChange ={(event,value)=>{
-            record.hightlight = value || '';
-            setRecord(diaryEntry.fromObject(record.toObject()));
-          }}
-          sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="Highlight" />}
-        />
-        <TextField 
-          id="time"
-          label="Time"
-          value={record.time}
-          onChange = {(event)=> {
-            record.time = 
-            setRecord({...record, time : event.target.value})
-          }}
-          
-        />
-
-        </Stack>
-        </Box>
-        */}
-
-<Box sx={ {m: 2 } }>
+      <Box sx={ {m: 2 } }>
         <Stack spacing={2} >
         <LocalizationProvider dateAdapter={ AdapterDateFns}>
         <MobileDatePicker          
@@ -277,7 +207,7 @@ export default function EditRecordScreen() {
           record.time = parseFloat(record.time);
           console.log('record time :'+record.time);
           
-          Controller.getController().update(diaryEntry.fromObject(record));
+          Controller.getController().update(DiaryEntry.fromObject(record));
           
           navigate('/',{ replace: true });
         

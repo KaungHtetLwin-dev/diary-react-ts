@@ -3,10 +3,8 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "@mui/material";
@@ -16,12 +14,12 @@ import { List, ListItemButton, ListItemText } from "@mui/material";
 import { useNavigate} from 'react-router-dom';
 
 import Controller from '../controller';
-import diaryEntry from "../model";
+import DiaryEntry from "../model";
 
 export default function  HomeScreen () {
   const [drawerState, setdrawerState] = React.useState(false);
   const  navigate = useNavigate();
-  let initEntries : Array<diaryEntry> = [];
+  let initEntries : Array<DiaryEntry> = [];
 
   const [entries,setEntries] = React.useState(initEntries);
   useEffect(()=> {
@@ -61,8 +59,8 @@ export default function  HomeScreen () {
                      onClick={async ()=>{
                       let records = await Controller.getController().readAll();
                       let csvString = records.map((record: { toCSVRow: () => any; }) => record.toCSVRow()).join('');
-                      csvString = '"date","title","comment"\n'+csvString;                     
-                      var blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+                      let tableHeader='Date,Week,Project,Project Category,Highlight,Title,Time,Will,Health,Money,Score,Comment\n';                                        
+                      var blob = new Blob([tableHeader +csvString], { type: 'text/csv;charset=utf-8;' });
                      
                           var link = document.createElement("a");
                           if (link.download !== undefined) { 

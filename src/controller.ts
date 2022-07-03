@@ -1,14 +1,14 @@
 import { Connection, DATA_TYPE } from 'jsstore';
 import workerInjector from "jsstore/dist/worker_injector";
-import diaryEntry from "./model";
+import DiaryEntry from "./model";
 export default class Controller{
 
     private static _instance? : Controller;
     
+   
 
-
-    private dbName ='Diary';
-    private tblRecord = {
+    private static _dbName ='Diary';
+    private static _tblRecord = {
         name: 'Record',
         columns: {
             
@@ -19,9 +19,21 @@ export default class Controller{
             
         }
     };
-    private database = {
-        name: this.dbName,
-        tables: [this.tblRecord]
+    private static _database = {
+        name: 'Diary',
+        tables: [
+            {
+                name: 'Record',
+                columns: {
+                    
+                    id:{ primaryKey: true, autoIncrement: true , enableSearch: true },
+                    date : { dataType : DATA_TYPE.DateTime},
+                    title :  {dataType : DATA_TYPE.String},
+                    comment :  {dataType : DATA_TYPE.String},
+                    
+                }
+            },
+        ]
     }
 
     private static _connection : Connection ;
@@ -36,7 +48,7 @@ export default class Controller{
       
         Controller._connection = new Connection();
         Controller._connection.addPlugin(workerInjector);
-        Controller._connection.initDb(this.database);
+        Controller._connection.initDb(Controller._database);
 
 
        
@@ -50,7 +62,7 @@ export default class Controller{
         
     }
 
-    public async create(entry:diaryEntry){
+    public async create(entry:DiaryEntry){
 
         let value :Record<string,any>= entry.toObject();
         value.id = undefined;
@@ -75,7 +87,7 @@ export default class Controller{
           
         });
         
-        return diaryEntry.fromObject(results[0]);
+        return DiaryEntry.fromObject(results[0]);
 
     }
 
@@ -92,13 +104,13 @@ export default class Controller{
           
         });
        
-        return results.map(result => diaryEntry.fromObject(result));
+        return results.map(result => DiaryEntry.fromObject(result));
        
 
 
     }
 
-    public async update(entry:diaryEntry){
+    public async update(entry:DiaryEntry){
         let value :any = entry.toObject();
         if(value.id){
         let id = value.id;        
@@ -122,7 +134,7 @@ export default class Controller{
    
     }
 
-    public async delete(entry:diaryEntry){
+    public async delete(entry:DiaryEntry){
         let value = entry.toObject();
         if(value.id){
        
