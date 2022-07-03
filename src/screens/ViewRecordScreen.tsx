@@ -28,7 +28,7 @@ export default function ViewRecordScreen() {
   const [record,setRecord] = React.useState(new diaryEntry());
   React.useEffect(()=>{
     if(id){
-    Controller.getController().read(id).then((data)=>{
+    Controller.getController().read(parseInt(id)).then((data)=>{
       if(data)
       setRecord(data);
     });}

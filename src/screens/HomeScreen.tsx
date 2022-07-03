@@ -26,9 +26,9 @@ export default function  HomeScreen () {
   const [entries,setEntries] = React.useState(initEntries);
   useEffect(()=> {
      Controller.getController().readAll().then((data) => setEntries(data) )  ;
-  })
+  },[])
 
-   
+  
 
   return (
     <>
@@ -83,6 +83,7 @@ export default function  HomeScreen () {
                   <ListItemButton 
                   onClick={async ()=>{
                     await Controller.getController().deleteAll();
+                    setEntries(initEntries);
                     setdrawerState(!drawerState);
                   }}
                   >

@@ -1,8 +1,8 @@
 
 export default class diaryEntry{
 
-    private _id? : string ;
-    private _date : string = new Date(1970,1,1).toISOString();
+    private _id? : number ;
+    private _date : Date = new Date(1970,1,1);
     private _week : number = -1;
     public project : String = '';
     public projectCategory : String = '';
@@ -18,17 +18,17 @@ export default class diaryEntry{
 
     
 
-    public get id (): string|undefined{ return this._id;}
+    public get id (): number|undefined{ return this._id;}
 
-    public set id (id:string|undefined){ this._id = id;}
+    public set id (id:number|undefined){ this._id = id;}
 
-    public get date () : Date  { return new Date(this._date);}
+    public get date () : Date  { return this._date ;}
 
     public set date (date : Date ){
        
     
             
-            this._date = date.toISOString();
+            this._date = date;
             //this._week = Math.floor(date.getDay()/7)+1;
         
     }
@@ -69,7 +69,7 @@ export default class diaryEntry{
     public toObject(){
         
         return {
-            _id : this._id,
+            id : this._id,
             date : this._date,
             week : this._week,
             project : this.project,
@@ -89,9 +89,10 @@ export default class diaryEntry{
     public static fromObject(obj:any){
     
         let entry = new diaryEntry();
+       
         
-        if(obj._id) entry.id = obj._id;       
-        if(obj.date) entry.date =new Date (obj.date);
+        if(obj.id) entry.id = obj.id;       
+        if(obj.date) entry.date = obj.date;
         if(obj.project) entry.project = obj.project;
         if(obj.projectCategory) entry.projectCategory = obj.projectCategory;
         if(obj.highlight) entry.hightlight = obj.highlight;

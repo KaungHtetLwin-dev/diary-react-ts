@@ -115,22 +115,10 @@ export default function AddRecordScreen() {
           onChange = {(event)=> setRecord({...record, comment : event.target.value})}
           
         />
-        {/*
-        //hide input for fields currently not using
-        //will use in later version of software
         
-        <TextField 
-          id="project" 
-          label="Project" 
-          value={record.project} 
-          onChange={(event)=>setRecord({...record,project : event.target.value})} 
-        />
-        <TextField 
-          id="projectCategory" 
-          label="Project Category" 
-          value={record.projectCategory} 
-          onChange={(event)=>setRecord({...record, projectCategory: event.target.value})}
-        />        
+      
+        
+     
         <Autocomplete  
           id="highlight"
           options={["new","start","finish"]}
@@ -146,28 +134,8 @@ export default function AddRecordScreen() {
           onChange = {(event)=> setRecord({...record, time : event.target.value})}
           
         />
-        <TextField 
-          id="will"
-          label="Will"
-          value={record.will}
-          onChange = {(event)=> setRecord({...record, will : event.target.value})}
-          
-        />
-           <TextField 
-          id="health"
-          label="Health"
-          value={record.health}
-          onChange = {(event)=> setRecord({...record, health : event.target.value})}
-          
-        />
-           <TextField 
-          id="money"
-          label="Money"
-          value={record.money}
-          onChange = {(event)=> setRecord({...record, money : event.target.value})}
-          
-        /> 
-        */}
+    
+        
 
         </Stack>
         </Box>

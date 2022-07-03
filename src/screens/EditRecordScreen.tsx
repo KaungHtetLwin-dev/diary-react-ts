@@ -10,7 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { Card, Dialog, DialogActions,  DialogTitle, Divider, Stack, TextField } from "@mui/material";
+import { Autocomplete, Card, CircularProgress, Dialog, DialogActions,  DialogTitle, Divider, Stack, TextField } from "@mui/material";
 import RecordView from "../components/RecordView";
 import Container from "@mui/material/Container";
 import { List, ListItemButton, ListItemText } from "@mui/material";
@@ -26,12 +26,28 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 export default function EditRecordScreen() {
     const  navigate = useNavigate();  
     const {id} = useParams();
-    const [record,setRecord] = React.useState(new diaryEntry());
+    let initRecord : Record<string,any> ={};
+    initRecord.date = new Date();
+    initRecord.project = '';
+    initRecord.projectCategory = '';
+    initRecord.highlight = '';
+    initRecord.title = '';
+    initRecord.time = '';
+    initRecord.will = '';
+    initRecord.health = '';
+    initRecord.money = '';
+    initRecord.comment = '';
+
+    const [record  ,setRecord ] = React.useState(initRecord);
     React.useEffect(()=>{
-      if(id){
-      Controller.getController().read(id).then((data)=>{
-        if(data)
-        setRecord(data);
+       if(id){
+      Controller.getController().read(parseInt(id)).then((data)=>{
+        if(data){
+        let readRecord : Record<string,any>  = data.toObject();
+        readRecord.time = readRecord.time.toString();
+        
+        setRecord(readRecord);
+        }
       });}
     },[]);
   
@@ -47,10 +63,19 @@ export default function EditRecordScreen() {
   
     const deleteRecord = () =>{
   
-       Controller.getController().delete(record);
+       Controller.getController().delete(diaryEntry.fromObject(record));
        navigate('/',{ replace: true });
     }
-  
+   
+
+    if(!record.id) return (
+      <Box  display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh">
+        <CircularProgress />
+      </Box>
+    );
     return (
       <>
       <Box sx={{ flexGrow: 1 }}>
@@ -112,8 +137,8 @@ export default function EditRecordScreen() {
   
      
    
-
-      
+        {/*
+        
         <Box sx={ {m: 2 } }>
         <Stack spacing={2} >
         <LocalizationProvider dateAdapter={ AdapterDateFns}>
@@ -158,8 +183,86 @@ export default function EditRecordScreen() {
           
         />
 
+      <Autocomplete  
+          id="highlight"
+          options={["new","start","finish"]}
+          value={record.hightlight}
+          onChange ={(event,value)=>{
+            record.hightlight = value || '';
+            setRecord(diaryEntry.fromObject(record.toObject()));
+          }}
+          sx={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Highlight" />}
+        />
+        <TextField 
+          id="time"
+          label="Time"
+          value={record.time}
+          onChange = {(event)=> {
+            record.time = 
+            setRecord({...record, time : event.target.value})
+          }}
+          
+        />
+
         </Stack>
         </Box>
+        */}
+
+<Box sx={ {m: 2 } }>
+        <Stack spacing={2} >
+        <LocalizationProvider dateAdapter={ AdapterDateFns}>
+        <MobileDatePicker          
+          label="Date"
+          inputFormat="dd/MM/yyyy"
+          value={record.date }
+          onChange={(date)=>  setRecord({...record, date,})}
+          renderInput={(params:any) => <TextField {...params} />}
+        />
+        </LocalizationProvider>
+        
+        <TextField 
+          id="title" 
+          label="Title" 
+          value={record.title}
+          onChange = {(event)=>setRecord({...record, title : event.target.value})}
+        />
+        
+           <TextField 
+            multiline
+            maxRows={10}
+            
+          id="comment"
+          label="Comment"
+          value={record.comment}
+          onChange = {(event)=> setRecord({...record, comment : event.target.value})}
+          
+        />
+        
+      
+        
+     
+        <Autocomplete  
+          id="highlight"
+          options={["new","start","finish"]}
+          value={record.hightlight}
+          onChange ={(event,value)=>setRecord({...record,highlight : value})}
+          sx={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Highlight" />}
+        />
+        <TextField 
+          id="time"
+          label="Time"
+          value={record.time}
+          onChange = {(event)=> setRecord({...record, time : event.target.value})}
+          
+        />
+    
+        
+
+        </Stack>
+        </Box>
+       
 
       <Fab
         color="primary"
@@ -171,9 +274,10 @@ export default function EditRecordScreen() {
         }}
         onClick = {()=>{
 
-     
+          record.time = parseFloat(record.time);
+          console.log('record time :'+record.time);
           
-          Controller.getController().update(record);
+          Controller.getController().update(diaryEntry.fromObject(record));
           
           navigate('/',{ replace: true });
         

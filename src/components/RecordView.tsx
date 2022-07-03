@@ -18,7 +18,10 @@ export default function RecordView(props: { entryID: any; } ) {
 
   let [entry,setEntry] = React.useState(new diaryEntry());
   const  navigate = useNavigate(); 
-  Controller.getController().read(entryID).then((data ) => setEntry(data || new diaryEntry()));
+  useEffect(()=>{
+    Controller.getController().read(entryID).then((data ) => setEntry(data || new diaryEntry()));
+  },[])
+  
 
 
   const [action, setAction] = useState('');

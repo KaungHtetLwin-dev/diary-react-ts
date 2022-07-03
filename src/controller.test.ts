@@ -7,11 +7,11 @@ test('test indexd db',async ()=>{
 
     let controller = Controller.getController();
     let testRecord = {
-        date : new Date(2022,5,22).toISOString(),
-        project : 'Hangout',
-        projectCategory : 'Firends',
+        date : new Date(2022,5,22),
+   
         hightlight : '',
-        title: 'phone'
+        title: 'phone',
+        comment : 'comment',
     }
     let testData = diaryEntry.fromObject(testRecord);
     
@@ -19,17 +19,11 @@ test('test indexd db',async ()=>{
     await controller.create(testData);
     await controller.create(diaryEntry.fromObject(testRecord));
     let res = await controller.create(diaryEntry.fromObject(testRecord));
-    //console.table(res);
-    //console.log(await controller.read(res.id));
-   
-
-
-    //expect(result?.toObject()).toEqual(testData);
+    console.log(res);
 
     let records = await controller.readAll();
-    //let values = records.rows.map(record => record.value);
     console.log(records);
- 
+    
 
 
 });

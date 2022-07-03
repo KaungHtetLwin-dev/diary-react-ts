@@ -1,14 +1,44 @@
-import  PouchDB from 'pouchdb';
+import { Connection, DATA_TYPE } from 'jsstore';
+import workerInjector from "jsstore/dist/worker_injector";
 import diaryEntry from "./model";
-
 export default class Controller{
 
     private static _instance? : Controller;
-    private static _db : PouchDB.Database; 
+    
 
-    private constructor(){
 
-        Controller._db = new PouchDB("DiaryDB");
+    private dbName ='Diary';
+    private tblRecord = {
+        name: 'Record',
+        columns: {
+            
+            id:{ primaryKey: true, autoIncrement: true , enableSearch: true },
+            date : { dataType : DATA_TYPE.DateTime},
+            title :  {dataType : DATA_TYPE.String},
+            comment :  {dataType : DATA_TYPE.String},
+            
+        }
+    };
+    private database = {
+        name: this.dbName,
+        tables: [this.tblRecord]
+    }
+
+    private static _connection : Connection ;
+
+    
+
+    
+
+    private  constructor(){       
+
+       
+      
+        Controller._connection = new Connection();
+        Controller._connection.addPlugin(workerInjector);
+        Controller._connection.initDb(this.database);
+
+
        
     }
 
@@ -21,52 +51,97 @@ export default class Controller{
     }
 
     public async create(entry:diaryEntry){
-        return await Controller._db.post(entry.toObject());
+
+        let value :Record<string,any>= entry.toObject();
+        value.id = undefined;
+
+        return await Controller._connection.insert({
+            into: 'Record',
+            values: [value]
+        });
+       
 
     }
 
-    public async read(id:string){
+    public async read(id:number){
        
-        let result = await Controller._db.get(id);
+       
+        var results =  await Controller._connection.select({
+            from: 'Record',
+            where :{
+                id : id
+            }
+                    
           
-        if(result) return diaryEntry.fromObject(result);
-        return;
+        });
+        
+        return diaryEntry.fromObject(results[0]);
 
     }
 
     public async readAll(){     
-        let results : any =  await Controller._db.allDocs({include_docs: true,});
-        return results.rows.map((row: Record<string,any>) => diaryEntry.fromObject(row.doc));
+
+
+        var results =  await Controller._connection.select({
+            from: 'Record',
+            order : {
+                by : 'id',
+                type :'desc'
+            },
+                    
+          
+        });
+       
+        return results.map(result => diaryEntry.fromObject(result));
        
 
 
     }
 
     public async update(entry:diaryEntry){
-        let  record,newRecord;
-        if(entry.id){
-            record = await Controller._db.get(entry.id);
-            newRecord = {...entry.toObject(), _rev :record._rev};
-            return await Controller._db.put(newRecord);
-            
-        }
+        let value :any = entry.toObject();
+        if(value.id){
+        let id = value.id;        
+        // value = {
+        //     date : value.date,
+        //     title : value.title,
+        //     comment : value.comment,
+        // }
+
+        await Controller._connection.update({ 
+            in: "Record",
+            set: value,
+            where: {
+                id : id,
+             
+          },
+      });
+      
+    }
+      
    
     }
 
     public async delete(entry:diaryEntry){
-        let  record;
-        if(entry.id){
-            record = await Controller._db.get(entry.id);
-            return await Controller._db.remove(record);
-        }
+        let value = entry.toObject();
+        if(value.id){
+       
+
+        var noOfRowsUpdated = await Controller._connection.remove({ 
+            from: "Record",
+           
+            where: {
+                id : value.id,
+             
+          },
+      });
+    }
+      
     }
 
     public async deleteAll(){
-
-     let results : any =  await Controller._db.allDocs();
-    for(let i = 0; i < results.rows.length; i++)
-       Controller._db.remove(results.rows[i].id,results.rows[i].value.rev);       
-    
+        Controller._connection.clear('Record');
+   
 
     }
 
