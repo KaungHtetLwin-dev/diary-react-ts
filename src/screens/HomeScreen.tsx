@@ -53,7 +53,7 @@ export default function  HomeScreen () {
               >
                 <List sx={{ width: "16rem", backgroundColor: "#0091EA" ,height:'100%', color:"#ffffff"}}>
                  
-                  <ListItemText sx={{height:'20%'}}>
+                  <ListItemText sx={{height:'20%', m:2}}>
                   Diary App v1
                   </ListItemText>
                   <ListItemButton

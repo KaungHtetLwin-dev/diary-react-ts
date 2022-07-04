@@ -45,19 +45,7 @@ export default function AddRecordScreen() {
     initRecord.money = '';
     initRecord.comment = '';
     const [record,setRecord] = React.useState (initRecord);
-
-   
-
     
-
- 
-
-    
-
- 
-
-   
-
   return (
     <>
     <Box sx={{ flexGrow: 1 }}>
@@ -137,11 +125,13 @@ export default function AddRecordScreen() {
             label="Highlight"
             value={record.highlight}
             
+            
             onChange={(event)=>{
               
               setRecord({...record, highlight : event.target.value})
             }}
           >
+            <MenuItem value="">None</MenuItem>
             <MenuItem value="new">new</MenuItem>
             <MenuItem value= "star">star</MenuItem>
             <MenuItem value= "fin">fin</MenuItem>
@@ -172,9 +162,7 @@ export default function AddRecordScreen() {
         onClick = {()=>{
 
           record.time = parseFloat(record.time);
-          record.will = parseFloat(record.will);
-          record.health = parseFloat(record.health);
-          record.money = parseFloat(record.money);
+          
           
           Controller.getController().create(DiaryRecord.fromObject(record));
           

@@ -167,34 +167,23 @@ export default function EditRecordScreen() {
           value={record.comment}
           onChange = {(event)=> setRecord({...record, comment : event.target.value})}
           
-        />
-        
+        />      
       
         
-     
-        {/* <Autocomplete  
-          id="highlight"
-          options={["new","start","finish"]}
-          value={record.hightlight}
-          onChange ={(event,value)=>setRecord({...record,highlight : value})}
-          sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="Highlight" />}
-        /> */}
+
         <Stack direction="row" spacing={2}>
-        <FormControl sx = {{width:'50%'}}>
-        <InputLabel id="highlight-label">Highlight</InputLabel>
-                  <Select
-            
-            labelId="highlight-label"
-            label="Highlight"
-            value={record.highlight}
-            
-            
-            onChange={(event)=>{
-              
-              setRecord({...record, highlight : event.target.value})
-            }}
-          >
+          <FormControl sx = {{width:'50%'}}>
+            <InputLabel id="highlight-label">Highlight</InputLabel>
+              <Select            
+                labelId="highlight-label"
+                label="Highlight"
+                value={record.highlight}               
+                onChange={
+                  (event)=>
+                    setRecord({...record, highlight : event.target.value})
+                }
+              >
+            <MenuItem value="">None</MenuItem>
             <MenuItem value="new">new</MenuItem>
             <MenuItem value= "star">star</MenuItem>
             <MenuItem value= "fin">fin</MenuItem>
