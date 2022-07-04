@@ -10,7 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { Drawer } from "@mui/material";
+import { Drawer, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import RecordView from "../components/RecordView";
 import Container from "@mui/material/Container";
 import { List, ListItemButton, ListItemText } from "@mui/material";
@@ -117,23 +117,45 @@ export default function AddRecordScreen() {
         />
         
       
-        
+        <Stack direction="row" spacing={2}>
+  
+
      
-        <Autocomplete  
+        {/* <Autocomplete  
           id="highlight"
-          options={["new","start","finish"]}
+          options={["new","star","fin"]}
           value={record.hightlight}
           onChange ={(event,value)=>setRecord({...record,highlight : value})}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="Highlight" />}
-        />
+        /> */}
+        <FormControl sx = {{width:'50%'}}>
+         <InputLabel id="highlight-label">Highlight</InputLabel>
+          <Select
+            
+            labelId="highlight-label"
+            label="Highlight"
+            value={record.highlight}
+            
+            onChange={(event)=>{
+              
+              setRecord({...record, highlight : event.target.value})
+            }}
+          >
+            <MenuItem value="new">new</MenuItem>
+            <MenuItem value= "star">star</MenuItem>
+            <MenuItem value= "fin">fin</MenuItem>
+          </Select>
+          </FormControl>
         <TextField 
+        sx = {{width:'50%'}}
           id="time"
           label="Time"
           value={record.time}
           onChange = {(event)=> setRecord({...record, time : event.target.value})}
           
         />
+        </Stack>
     
         
 

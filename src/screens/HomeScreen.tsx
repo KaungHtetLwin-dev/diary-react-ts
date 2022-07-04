@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { Drawer } from "@mui/material";
+import { Drawer, Stack } from "@mui/material";
 import RecordView from "../components/RecordView";
 import Container from "@mui/material/Container";
 import { List, ListItemButton, ListItemText } from "@mui/material";
@@ -31,8 +31,8 @@ export default function  HomeScreen () {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+      <Box sx={{}}>
+        <AppBar >
           <Toolbar>
             <IconButton
               size="large"
@@ -94,13 +94,15 @@ export default function  HomeScreen () {
             </Typography>
           </Toolbar>
         </AppBar>
-      </Box>
+      
 
       
-      
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" sx = {{mt:10}}>
+     
         { entries.map( entry => <RecordView entryID={entry.id} key={entry.id} /> ) }
+     
       </Container>
+      
 
       <Fab
         color="primary"
@@ -114,6 +116,7 @@ export default function  HomeScreen () {
       >
         <AddIcon />
       </Fab>
+      </Box>
     </>
   );
 }

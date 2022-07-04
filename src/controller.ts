@@ -4,7 +4,7 @@ import DiaryRecord from "./model";
 export default class Controller{
 
     private static _instance? : Controller;
-    
+    private static _connection : Connection ;
    
     // database schema
     private static _database = {
@@ -26,12 +26,6 @@ export default class Controller{
         ]
     }
 
-    private static _connection : Connection ;
-
-    
-
-    
-
     private  constructor(){             
         Controller._connection = new Connection();
         Controller._connection.addPlugin(workerInjector);
@@ -44,11 +38,11 @@ export default class Controller{
         return Controller._instance;       
     }
 
-    public async create(entry:DiaryRecord){       
-        entry.id = undefined;
+    public async create(record:DiaryRecord){       
+        record.id = undefined;
         return await Controller._connection.insert({
             into: 'Record',
-            values: [ entry.toObject() ]
+            values: [ record.toObject() ]
         });
        
 
@@ -66,60 +60,39 @@ export default class Controller{
 
     }
 
-    public async readAll(){     
-
-
+    public async readAll(){   
         var results: Record<string,any>[] =  await Controller._connection.select({
             from: 'Record',
             order : {
                 by : 'id',
                 type :'desc'
-            },
-                    
-          
-        });
-       
-        return results.map(result => DiaryRecord.fromObject(result));
-       
-
-
+            },                     
+        });       
+        return results.map(result => DiaryRecord.fromObject(result));       
     }
 
     public async update(entry:DiaryRecord){
         let value :any = entry.toObject();
-        if(value.id){
-        let id = value.id;        
-
-
-        await Controller._connection.update({ 
-            in: "Record",
-            set: value,
-            where: {
-                id : id,
-             
-          },
-      });
-      
-    }
-      
-   
+        if(value.id){             
+            return await Controller._connection.update({ 
+                in: "Record",
+                set: value,
+                where: {
+                    id : value.id             
+            },
+         });      
+        }      
     }
 
-    public async delete(entry:DiaryRecord){
-        let value = entry.toObject();
-        if(value.id){
-       
-
-        var noOfRowsUpdated = await Controller._connection.remove({ 
-            from: "Record",
-           
-            where: {
-                id : value.id,
-             
-          },
-      });
-    }
-      
+    public async delete(record:DiaryRecord){       
+        if(record.id){
+            return await Controller._connection.remove({ 
+                from: "Record",           
+                where: {
+                    id : record.id,             
+                },
+            });
+        }      
     }
 
     public async deleteAll(){
