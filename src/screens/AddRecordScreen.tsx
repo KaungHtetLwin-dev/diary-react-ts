@@ -24,7 +24,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import DiaryEntry from '../model';
+import DiaryRecord from '../model';
 import Autocomplete from '@mui/material/Autocomplete';
 import { parse } from 'path';
 import Controller from '../controller';
@@ -154,7 +154,7 @@ export default function AddRecordScreen() {
           record.health = parseFloat(record.health);
           record.money = parseFloat(record.money);
           
-          Controller.getController().create(DiaryEntry.fromObject(record));
+          Controller.getController().create(DiaryRecord.fromObject(record));
           
           navigate('/',{ replace: true });
         

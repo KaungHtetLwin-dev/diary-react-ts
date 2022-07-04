@@ -19,7 +19,7 @@ import { useNavigate} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { stringify } from 'querystring';
 import Controller from "../controller";
-import DiaryEntry from '../model';
+import DiaryRecord from '../model';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
@@ -63,7 +63,7 @@ export default function EditRecordScreen() {
   
     const deleteRecord = async () =>{
   
-       await Controller.getController().delete(DiaryEntry.fromObject(record));
+       await Controller.getController().delete(DiaryRecord.fromObject(record));
        navigate('/',{ replace: true });
     }
    
@@ -207,7 +207,7 @@ export default function EditRecordScreen() {
           record.time = parseFloat(record.time);
           console.log('record time :'+record.time);
           
-          Controller.getController().update(DiaryEntry.fromObject(record));
+          Controller.getController().update(DiaryRecord.fromObject(record));
           
           navigate('/',{ replace: true });
         

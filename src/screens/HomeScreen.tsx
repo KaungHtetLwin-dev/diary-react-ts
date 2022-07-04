@@ -12,14 +12,15 @@ import RecordView from "../components/RecordView";
 import Container from "@mui/material/Container";
 import { List, ListItemButton, ListItemText } from "@mui/material";
 import { useNavigate} from 'react-router-dom';
+import { saveAs } from 'file-saver';
 
 import Controller from '../controller';
-import DiaryEntry from "../model";
+import DiaryRecord from "../model";
 
 export default function  HomeScreen () {
   const [drawerState, setdrawerState] = React.useState(false);
   const  navigate = useNavigate();
-  let initEntries : Array<DiaryEntry> = [];
+  let initEntries : Array<DiaryRecord> = [];
 
   const [entries,setEntries] = React.useState(initEntries);
   useEffect(()=> {
@@ -60,19 +61,11 @@ export default function  HomeScreen () {
                       let records = await Controller.getController().readAll();
                       let csvString = records.map((record: { toCSVRow: () => any; }) => record.toCSVRow()).join('');
                       let tableHeader='Date,Week,Project,Project Category,Highlight,Title,Time,Will,Health,Money,Score,Comment\n';                                        
+                  
                       var blob = new Blob([tableHeader +csvString], { type: 'text/csv;charset=utf-8;' });
+                      saveAs(blob,'export.csv');
                      
-                          var link = document.createElement("a");
-                          if (link.download !== undefined) { 
-                              var url = URL.createObjectURL(blob);
-                              link.setAttribute("href", url);
-                              link.setAttribute("download", 'export.csv');
-                              link.style.visibility = 'hidden';
-                              document.body.appendChild(link);
-                              link.click();
-                              document.body.removeChild(link);
-                          
-                      }
+               
                       setdrawerState(!drawerState);
                     }}
                     >
@@ -106,12 +99,7 @@ export default function  HomeScreen () {
       
       
       <Container maxWidth="sm">
-        {
-          entries.map((entry) => {
-            
-          
-          return (<RecordView entryID={entry.id} key={entry.id} />)})
-        }
+        { entries.map( entry => <RecordView entryID={entry.id} key={entry.id} /> ) }
       </Container>
 
       <Fab

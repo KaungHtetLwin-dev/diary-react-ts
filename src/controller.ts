@@ -1,24 +1,12 @@
 import { Connection, DATA_TYPE } from 'jsstore';
 import workerInjector from "jsstore/dist/worker_injector";
-import DiaryEntry from "./model";
+import DiaryRecord from "./model";
 export default class Controller{
 
     private static _instance? : Controller;
     
    
-
-    private static _dbName ='Diary';
-    private static _tblRecord = {
-        name: 'Record',
-        columns: {
-            
-            id:{ primaryKey: true, autoIncrement: true , enableSearch: true },
-            date : { dataType : DATA_TYPE.DateTime},
-            title :  {dataType : DATA_TYPE.String},
-            comment :  {dataType : DATA_TYPE.String},
-            
-        }
-    };
+    // database schema
     private static _database = {
         name: 'Diary',
         tables: [
@@ -30,6 +18,8 @@ export default class Controller{
                     date : { dataType : DATA_TYPE.DateTime},
                     title :  {dataType : DATA_TYPE.String},
                     comment :  {dataType : DATA_TYPE.String},
+                    time : {dataType : DATA_TYPE.Number},
+                    highlight : { dataType : DATA_TYPE.String}
                     
                 }
             },
@@ -42,59 +32,44 @@ export default class Controller{
 
     
 
-    private  constructor(){       
-
-       
-      
+    private  constructor(){             
         Controller._connection = new Connection();
         Controller._connection.addPlugin(workerInjector);
         Controller._connection.initDb(Controller._database);
-
-
-       
     }
 
     public static getController(){
         if(!Controller._instance)
             Controller._instance = new Controller();       
-        return Controller._instance;
-        
-        
+        return Controller._instance;       
     }
 
-    public async create(entry:DiaryEntry){
-
-        let value :Record<string,any>= entry.toObject();
-        value.id = undefined;
-
+    public async create(entry:DiaryRecord){       
+        entry.id = undefined;
         return await Controller._connection.insert({
             into: 'Record',
-            values: [value]
+            values: [ entry.toObject() ]
         });
        
 
     }
 
-    public async read(id:number){
-       
-       
-        var results =  await Controller._connection.select({
+    public async read(id:number){  
+        var results : Record<string,any>[] =  await Controller._connection.select({
             from: 'Record',
             where :{
                 id : id
             }
-                    
-          
         });
         
-        return DiaryEntry.fromObject(results[0]);
+        return DiaryRecord.fromObject(results[0]);
 
     }
 
     public async readAll(){     
 
 
-        var results =  await Controller._connection.select({
+        var results: Record<string,any>[] =  await Controller._connection.select({
             from: 'Record',
             order : {
                 by : 'id',
@@ -104,21 +79,17 @@ export default class Controller{
           
         });
        
-        return results.map(result => DiaryEntry.fromObject(result));
+        return results.map(result => DiaryRecord.fromObject(result));
        
 
 
     }
 
-    public async update(entry:DiaryEntry){
+    public async update(entry:DiaryRecord){
         let value :any = entry.toObject();
         if(value.id){
         let id = value.id;        
-        // value = {
-        //     date : value.date,
-        //     title : value.title,
-        //     comment : value.comment,
-        // }
+
 
         await Controller._connection.update({ 
             in: "Record",
@@ -134,7 +105,7 @@ export default class Controller{
    
     }
 
-    public async delete(entry:DiaryEntry){
+    public async delete(entry:DiaryRecord){
         let value = entry.toObject();
         if(value.id){
        
@@ -152,9 +123,7 @@ export default class Controller{
     }
 
     public async deleteAll(){
-        Controller._connection.clear('Record');
-   
-
+        return await Controller._connection.clear('Record');
     }
 
 }

@@ -1,5 +1,5 @@
 
-export default class DiaryEntry{
+export default class DiaryRecord{
 
     public id? : number ;
     public date : Date = new Date(1970,1,1);
@@ -8,7 +8,7 @@ export default class DiaryEntry{
     public time : number = 0;
     public hightlight : String  = '';
 
-    public toObject(){
+    public toObject():Record<string,any>{
         
         return {
             id : this.id,
@@ -21,9 +21,9 @@ export default class DiaryEntry{
         }
     }
 
-    public static fromObject(obj:any){
+    public static fromObject(obj:Record<string,any>){
     
-        let entry = new DiaryEntry();
+        let entry = new DiaryRecord();
        
         
         if(obj.id) entry.id = obj.id;       
@@ -40,8 +40,10 @@ export default class DiaryEntry{
 
     public toCSVRow(){
 
-        
-        let dateString = this.date.getDate()+'.'+this.date.getMonth()+"."+this.date.getFullYear();
+        let dateSeparator = '.';
+        let dateString = this.date.getDate() + dateSeparator + 
+                         this.date.getMonth() + dateSeparator + 
+                         this.date.getFullYear();
         let comma = ',';
         let week = '';
         let project = '';
@@ -56,18 +58,18 @@ export default class DiaryEntry{
         let hightlight = this.hightlight.replaceAll('"','""');
         let time = this.time.toString();
 
-        let csvString = doubleQuote+dateString+doubleQuote+comma+
-                        doubleQuote+week+doubleQuote+comma+
-                        doubleQuote+project+doubleQuote+comma+
-                        doubleQuote+projectCategory+doubleQuote+comma+
-                        doubleQuote+hightlight+doubleQuote+comma+
-                        doubleQuote+title+doubleQuote+comma+
-                        doubleQuote+time+doubleQuote+comma+
-                        doubleQuote+will+doubleQuote+comma+
-                        doubleQuote+health+doubleQuote+comma+
-                        doubleQuote+money+doubleQuote+comma+
-                        doubleQuote+score+doubleQuote+comma+
-                        doubleQuote+comment+doubleQuote+comma+'\n';
+        let csvString = doubleQuote + dateString + doubleQuote + comma +
+                        doubleQuote + week + doubleQuote + comma +
+                        doubleQuote + project + doubleQuote + comma +
+                        doubleQuote + projectCategory + doubleQuote + comma +
+                        doubleQuote + hightlight + doubleQuote + comma +
+                        doubleQuote + title + doubleQuote + comma +
+                        doubleQuote + time + doubleQuote + comma +
+                        doubleQuote + will + doubleQuote + comma +
+                        doubleQuote + health + doubleQuote + comma +
+                        doubleQuote + money + doubleQuote + comma +
+                        doubleQuote + score + doubleQuote + comma +
+                        doubleQuote + comment + doubleQuote + comma +'\n';
         
 
         return csvString;

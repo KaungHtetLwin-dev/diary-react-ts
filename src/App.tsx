@@ -4,19 +4,22 @@ import './App.css';
 import './screens/HomeScreen';
 import HomeScreen from './screens/HomeScreen';
 import AddRecordScreen from './screens/AddRecordScreen';
-import {BrowserRouter,Routes,Route} from 'react-router-dom';
+import {BrowserRouter,Routes,Route, } from 'react-router-dom';
 
 import EditRecordScreen from './screens/EditRecordScreen';
 
 function App() {
   return (
+   
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomeScreen />} />
+        <Route path="/" element={<HomeScreen />} />        
         <Route path="/add-record" element={<AddRecordScreen />} />        
         <Route path="/edit-record/:id" element={<EditRecordScreen/>} />
       </Routes>
-    </BrowserRouter>
+     </BrowserRouter>
+   
+    
   );
 }
 

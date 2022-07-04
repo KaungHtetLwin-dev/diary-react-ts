@@ -1,7 +1,7 @@
 import "fake-indexeddb/auto";
 import Controller from './controller';
 
-import DiaryEntry from './model';
+import DiaryRecord from './model';
 
 test('test indexd db',async ()=>{
 
@@ -13,12 +13,12 @@ test('test indexd db',async ()=>{
         title: 'phone',
         comment : 'comment',
     }
-    let testData = DiaryEntry.fromObject(testRecord);
+    let testData = DiaryRecord.fromObject(testRecord);
     
     
     await controller.create(testData);
-    await controller.create(DiaryEntry.fromObject(testRecord));
-    let res = await controller.create(DiaryEntry.fromObject(testRecord));
+    await controller.create(DiaryRecord.fromObject(testRecord));
+    let res = await controller.create(DiaryRecord.fromObject(testRecord));
     console.log(res);
 
     let records = await controller.readAll();
