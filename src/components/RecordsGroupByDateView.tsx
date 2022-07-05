@@ -3,6 +3,7 @@ import { Box, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Stac
 import React, { useEffect } from 'react'
 import Controller from '../controller';
 import RecordView from './RecordView';
+import { useSwipeable } from "react-swipeable";
 
 export default function RecordsGroupByDateView() {
     let initObj: Record<string,any>  = {};
@@ -34,10 +35,35 @@ export default function RecordsGroupByDateView() {
         Controller.getController().readAllAndGroupByDate().then((data) => setGroupedEntries(data) ) ;
      },[]);
 
-   
+     const handlers = useSwipeable(
+       
+        { onSwiped :(eventData) => {
+          if(eventData.dir === 'Left' && tabindex < (sortedDates.length-1)){
+              
+               setTabIndex(tabindex+1);
+               return;
+              
+          }
+          if(eventData.dir == 'Right' && tabindex > 0 ) {
+            setTabIndex(tabindex-1);
+            return;
+          }
+        }}
+      )
+
+  // setup ref for your usage
+  const myRef = React.useRef();
+
+  const refPassthrough = (el:any) => {
+    // call useSwipeable ref prop with el
+    handlers.ref(el);
+
+    // set myRef el so you can access it yourself
+    myRef.current = el;
+  }
     
   return (
-    <div > 
+    <div {...handlers} ref={refPassthrough} > 
     
     <Stack direction="row" spacing={2} width="100%" justifyContent="space-between"  alignItems="center">
     <IconButton
