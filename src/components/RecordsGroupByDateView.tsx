@@ -1,5 +1,5 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { Box, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
 import React, { useEffect } from 'react'
 import Controller from '../controller';
 import RecordView from './RecordView';
@@ -51,9 +51,34 @@ export default function RecordsGroupByDateView() {
             <ArrowBack/>
           </IconButton>
          
-          <Typography >
-            {sortedDates[tabindex]}
-          </Typography>
+          
+
+         
+       
+        <Select
+         
+          IconComponent={()=> null}
+          disableUnderline
+          sx={{
+            alignItems:'center',
+            textAlign:'center',
+            
+          }}
+          value={tabindex}
+          onChange={(event)=> setTabIndex(parseInt(event.target.value as string))}
+          
+        >
+         
+          {
+            sortedDates.map((date,index)=>{
+              return (
+                <MenuItem value={index} >  {date}</MenuItem>
+              )
+            })
+          }
+
+        </Select>
+    
           
           <IconButton
             size="large"
@@ -68,7 +93,7 @@ export default function RecordsGroupByDateView() {
           </IconButton>
     </Stack>
    
-     
+    <Box style={{ height:'80vh', overflow: 'auto'}}>
         {
             groupedEntries[sortedDates[tabindex]]? 
             groupedEntries[sortedDates[tabindex]]
@@ -77,7 +102,7 @@ export default function RecordsGroupByDateView() {
         }
      
       
-    
+    </Box>
 
     </div>
   )
