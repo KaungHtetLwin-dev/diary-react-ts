@@ -158,6 +158,7 @@ export default function EditRecordScreen() {
         <TextField 
           id="title" 
           label="Title" 
+          
           value={record.title}
           onChange = {(event)=>setRecord({...record, title : event.target.value})}
         />

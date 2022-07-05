@@ -70,6 +70,7 @@ export default function AddRecordScreen() {
         <TextField 
           id="title" 
           label="Title" 
+          autoFocus={true}
           value={record.title}
           onChange = {(event)=>setRecord({...record, title : event.target.value})}
         />
