@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { Drawer, Stack } from "@mui/material";
+import { Drawer, Stack, Tab, Tabs } from "@mui/material";
 import RecordView from "../components/RecordView";
 import Container from "@mui/material/Container";
 import { List, ListItemButton, ListItemText } from "@mui/material";
@@ -16,6 +16,11 @@ import { saveAs } from 'file-saver';
 
 import Controller from '../controller';
 import DiaryRecord from "../model";
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import RecordsGroupByDateView from "../components/RecordsGroupByDateView";
+
 
 export default function  HomeScreen () {
   const [drawerState, setdrawerState] = React.useState(false);
@@ -23,8 +28,11 @@ export default function  HomeScreen () {
   let initEntries : Array<DiaryRecord> = [];
 
   const [entries,setEntries] = React.useState(initEntries);
+  const [groupedEntries,setGroupedEntries] = React.useState(new Object());
+  const [tab,setTab] = React.useState('');
   useEffect(()=> {
      Controller.getController().readAll().then((data) => setEntries(data) )  ;
+     Controller.getController().readAllAndGroupByDate().then((data) => setGroupedEntries(data) ) ;
   },[])
 
   
@@ -94,15 +102,21 @@ export default function  HomeScreen () {
             </Typography>
           </Toolbar>
         </AppBar>
+     
+
+     
+        <Container maxWidth="sm" sx = {{mt:10}}>
+          <RecordsGroupByDateView />
+        </Container>
       
 
       
-      <Container maxWidth="sm" sx = {{mt:10}}>
+      {/* <Container maxWidth="sm" sx = {{mt:10}}>
      
         { entries.map( entry => <RecordView entryID={entry.id} key={entry.id} /> ) }
      
       </Container>
-      
+       */}
 
       <Fab
         color="primary"

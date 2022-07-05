@@ -72,6 +72,22 @@ export default class Controller{
         return results.map(result => DiaryRecord.fromObject(result));       
     }
 
+    public async readAllAndGroupByDate(){
+        let records = await this.readAll();
+        let groupedRecords : Record<string,Array<any>> ={};
+        records.forEach(record => {
+            if(!groupedRecords[record.getDateString()]){
+                groupedRecords[record.getDateString()]=[];
+                groupedRecords[record.getDateString()].push(record);
+            }
+            else{
+                groupedRecords[record.getDateString()].push(record);
+            }
+        });
+        
+        return groupedRecords;
+    }
+
     public async update(entry:DiaryRecord){
         let value :any = entry.toObject();
         if(value.id){             

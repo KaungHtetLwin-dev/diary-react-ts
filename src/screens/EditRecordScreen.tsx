@@ -6,10 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
 import {  
   Checkbox,
   CircularProgress, 
@@ -65,8 +62,7 @@ export default function EditRecordScreen() {
         readRecord.highlight.split(',').forEach((value :string) => highlightObj[value]=true);
         readRecord.highlight = highlightObj;
         
-        console.log('readRecord');
-        console.log(readRecord);
+      
       
         
         setRecord(readRecord);

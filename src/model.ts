@@ -8,6 +8,14 @@ export default class DiaryRecord{
     public time : number = 0;
     public hightlight : String  = '';
 
+    public getDateString(){
+        let dateSeparator = '.';
+        let dateString = this.date.getDate() + dateSeparator + 
+                         (this.date.getMonth()+1) + dateSeparator + 
+                         this.date.getFullYear();
+        return dateString;
+    }
+
     public toObject():Record<string,any>{
         
         return {
