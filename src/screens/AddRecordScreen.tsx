@@ -6,8 +6,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Fab from "@mui/material/Fab";
-import {  FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { ArrowBack, Save } from '@mui/icons-material';
+import {  Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, InputLabel, MenuItem, Select } from "@mui/material";
+import { ArrowBack, QrCodeScannerOutlined, Save } from '@mui/icons-material';
 import { useNavigate} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -22,10 +22,24 @@ export default function AddRecordScreen() {
     
   let initRecord : Record<string,any> = new DiaryRecord().toObject();
   initRecord.date = new Date();
-  initRecord.time = '';   
+  initRecord.time = '';
+  initRecord.highlight = {
+    new: false,
+    star : false,
+    fin : false,
+  }
+     
 
   const [record,setRecord] = React.useState (initRecord);
   const  navigate = useNavigate();
+
+  const handleHightlightChange = (event: React.ChangeEvent<HTMLInputElement>)=>{
+    record.highlight[event.target.name] = event.target.checked;
+    let newRecord = JSON.parse(JSON.stringify(record));
+    newRecord.date = new Date(newRecord.date);
+    setRecord(newRecord);
+
+  };
     
   return (
     <>
@@ -86,9 +100,20 @@ export default function AddRecordScreen() {
           
         />
         
-      
+        <FormGroup>
         <Stack direction="row" spacing={2}>
-        <FormControl sx = {{width:'50%'}}>
+         
+        <FormLabel sx={{ pt:1.15}}>Highlight</FormLabel>
+       
+          <FormControlLabel control={<Checkbox checked={record.highlight.new} onChange={handleHightlightChange} name="new"/>} label="new" />
+          <FormControlLabel control={<Checkbox checked={record.highlight.star} onChange={handleHightlightChange} name="star"/>} label="star" />
+          <FormControlLabel control={<Checkbox checked={record.highlight.fin}  onChange={handleHightlightChange}name="fin"/>} label="fin" />
+          </Stack>
+        </FormGroup>
+        
+      
+        {/* <Stack direction="row" spacing={2}> */}
+        {/* <FormControl sx = {{width:'50%'}}>
          <InputLabel id="highlight-label">Highlight</InputLabel>
           <Select
             
@@ -107,16 +132,16 @@ export default function AddRecordScreen() {
             <MenuItem value= "star">star</MenuItem>
             <MenuItem value= "fin">fin</MenuItem>
           </Select>
-          </FormControl>
+          </FormControl> */}
         <TextField 
-        sx = {{width:'50%'}}
+        
           id="time"
           label="Time"
           value={record.time}
           onChange = {(event)=> setRecord({...record, time : event.target.value})}
           
         />
-        </Stack>
+        {/* </Stack> */}
     
         
 
@@ -130,12 +155,17 @@ export default function AddRecordScreen() {
           bottom: 32,
           right: 32,
         }}
-        onClick = {()=>{
+        onClick = {async ()=>{
 
-          record.time = parseFloat(record.time);
+          record.time = parseFloat(record.time);  
+          record.highlight = Object.entries(record.highlight)
+                              .filter(([key,value]) => value)
+                              .map(([key,value])=> key)
+                              .join();   
+                              
+         
           
-          
-          Controller.getController().create(DiaryRecord.fromObject(record));
+          await Controller.getController().create(DiaryRecord.fromObject(record));
           
           navigate('/',{ replace: true });
         

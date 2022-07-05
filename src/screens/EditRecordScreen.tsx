@@ -11,11 +11,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import {  
+  Checkbox,
   CircularProgress, 
   Dialog, 
   DialogActions,  
   DialogTitle, 
   FormControl, 
+  FormControlLabel, 
+  FormGroup, 
+  FormLabel, 
   InputLabel, 
   MenuItem, 
   Select, 
@@ -36,7 +40,11 @@ export default function EditRecordScreen() {
     let initRecord : Record<string,any> ={};
     initRecord.date = new Date();
   
-    initRecord.highlight = '';
+    initRecord.highlight =  {
+      new: false,
+      star : false,
+      fin : false,
+    };
     initRecord.title = '';
     initRecord.time = '';
 
@@ -49,11 +57,31 @@ export default function EditRecordScreen() {
         if(data){
         let readRecord : Record<string,any>  = data.toObject();
         readRecord.time = readRecord.time.toString();
+        let highlightObj:any = {
+          new: false,
+          star : false,
+          fin : false,
+        };
+        readRecord.highlight.split(',').forEach((value :string) => highlightObj[value]=true);
+        readRecord.highlight = highlightObj;
+        
+        console.log('readRecord');
+        console.log(readRecord);
+      
         
         setRecord(readRecord);
         }
       });}
     },[]);
+
+    const handleHightlightChange = (event: React.ChangeEvent<HTMLInputElement>)=>{
+      record.highlight[event.target.name] = event.target.checked;
+      let newRecord = JSON.parse(JSON.stringify(record));
+      newRecord.date = new Date(newRecord.date);
+      setRecord(newRecord);
+  
+    };
+
   
     const [open, setOpen] = React.useState(false);
   
@@ -174,10 +202,19 @@ export default function EditRecordScreen() {
           
         />      
       
-        
-
+      <FormGroup>
         <Stack direction="row" spacing={2}>
-          <FormControl sx = {{width:'50%'}}>
+         
+        <FormLabel sx={{ pt:1.15}}>Highlight</FormLabel>
+       
+          <FormControlLabel control={<Checkbox checked={record.highlight.new} onChange={handleHightlightChange} name="new"/>} label="new" />
+          <FormControlLabel control={<Checkbox checked={record.highlight.star} onChange={handleHightlightChange} name="star"/>} label="star" />
+          <FormControlLabel control={<Checkbox checked={record.highlight.fin}  onChange={handleHightlightChange}name="fin"/>} label="fin" />
+          </Stack>
+        </FormGroup>
+
+        {/* <Stack direction="row" spacing={2}> */}
+          {/* <FormControl sx = {{width:'50%'}}>
             <InputLabel id="highlight-label">Highlight</InputLabel>
               <Select            
                 labelId="highlight-label"
@@ -193,17 +230,17 @@ export default function EditRecordScreen() {
             <MenuItem value= "star">star</MenuItem>
             <MenuItem value= "fin">fin</MenuItem>
           </Select>
-          </FormControl>
+          </FormControl> */}
 
         <TextField 
-           sx = {{width:'50%'}}
+           
           id="time"
           label="Time"
           value={record.time}
           onChange = {(event)=> setRecord({...record, time : event.target.value})}
           
         />
-        </Stack>
+        {/* </Stack> */}
         
 
         </Stack>
@@ -221,7 +258,11 @@ export default function EditRecordScreen() {
         onClick = {()=>{
 
           record.time = parseFloat(record.time);
-          console.log('record time :'+record.time);
+          record.highlight = Object.entries(record.highlight)
+                              .filter(([key,value]) => value)
+                              .map(([key,value])=> key)
+                              .join();   
+          
           
           Controller.getController().update(DiaryRecord.fromObject(record));
           

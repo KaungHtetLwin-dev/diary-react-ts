@@ -40,6 +40,7 @@ export default class Controller{
 
     public async create(record:DiaryRecord){       
         record.id = undefined;
+        
         return await Controller._connection.insert({
             into: 'Record',
             values: [ record.toObject() ]
