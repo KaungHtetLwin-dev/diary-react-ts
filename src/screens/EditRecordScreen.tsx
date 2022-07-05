@@ -10,14 +10,21 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { Autocomplete, Card, CircularProgress, Dialog, DialogActions,  DialogTitle, Divider, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
-import RecordView from "../components/RecordView";
-import Container from "@mui/material/Container";
-import { List, ListItemButton, ListItemText } from "@mui/material";
-import { ArrowBack, Delete, Edit, Save } from '@mui/icons-material';
+import {  
+  CircularProgress, 
+  Dialog, 
+  DialogActions,  
+  DialogTitle, 
+  FormControl, 
+  InputLabel, 
+  MenuItem, 
+  Select, 
+  Stack, 
+  TextField 
+} from "@mui/material";
+import { ArrowBack, Delete, Save } from '@mui/icons-material';
 import { useNavigate} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { stringify } from 'querystring';
 import Controller from "../controller";
 import DiaryRecord from '../model';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
@@ -28,14 +35,11 @@ export default function EditRecordScreen() {
     const {id} = useParams();
     let initRecord : Record<string,any> ={};
     initRecord.date = new Date();
-    initRecord.project = '';
-    initRecord.projectCategory = '';
+  
     initRecord.highlight = '';
     initRecord.title = '';
     initRecord.time = '';
-    initRecord.will = '';
-    initRecord.health = '';
-    initRecord.money = '';
+
     initRecord.comment = '';
 
     const [record  ,setRecord ] = React.useState(initRecord);

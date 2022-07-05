@@ -61,8 +61,8 @@ export default function  HomeScreen () {
                       let records = await Controller.getController().readAll();
                       let csvString = records.map((record: { toCSVRow: () => any; }) => record.toCSVRow()).join('');
                       let tableHeader='Date,Week,Project,Project Category,Highlight,Title,Time,Will,Health,Money,Score,Comment\n';                                        
-                  
-                      var blob = new Blob([tableHeader +csvString], { type: 'text/csv;charset=utf-8;' });
+                      let BOM = '\ufeff';
+                      var blob = new Blob([BOM + tableHeader +csvString], { type: 'text/csv;charset=utf-8;' });
                       saveAs(blob,'export.csv');
                      
                
