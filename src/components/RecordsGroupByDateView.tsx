@@ -1,14 +1,17 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { Box, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
+import { Box, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Slide, SliderProps, Stack, Typography } from '@mui/material';
 import React, { useEffect } from 'react'
 import Controller from '../controller';
 import RecordView from './RecordView';
 import { useSwipeable } from "react-swipeable";
+import Fade from '@mui/material/Fade';
+
 
 export default function RecordsGroupByDateView() {
     let initObj: Record<string,any>  = {};
     const [groupedEntries,setGroupedEntries] = React.useState(initObj);
     const [tabindex,setTabIndex] = React.useState(0);
+   
 
     let sortedDates = Object.keys(groupedEntries);
     sortedDates.sort((keyA,keyB) =>{
@@ -29,7 +32,6 @@ export default function RecordsGroupByDateView() {
 
     });
     
-
     useEffect(()=> {
         
         Controller.getController().readAllAndGroupByDate().then((data) => setGroupedEntries(data) ) ;
@@ -38,14 +40,17 @@ export default function RecordsGroupByDateView() {
      const handlers = useSwipeable(
        
         { onSwiped :(eventData) => {
-          if(eventData.dir === 'Left' && tabindex < (sortedDates.length-1)){
-              
-               setTabIndex(tabindex+1);
+          if(eventData.dir === 'Left' && tabindex > 0){
+           
+            setTabIndex(tabindex-1);
+               
                return;
               
           }
-          if(eventData.dir == 'Right' && tabindex > 0 ) {
-            setTabIndex(tabindex-1);
+          if(eventData.dir == 'Right'  && tabindex < (sortedDates.length-1) ) {
+            
+            setTabIndex(tabindex+1);
+            
             return;
           }
         }}
@@ -118,17 +123,19 @@ export default function RecordsGroupByDateView() {
             <ArrowForward/>
           </IconButton>
     </Stack>
-   
+    
     <Box style={{ height:'80vh', overflow: 'auto'}}>
+     
         {
             groupedEntries[sortedDates[tabindex]]? 
             groupedEntries[sortedDates[tabindex]]
                 .map( (entry:any) => <RecordView entryID={entry.id} key={entry.id} /> )
             :<></> 
         }
-     
+      
       
     </Box>
+   
 
     </div>
   )

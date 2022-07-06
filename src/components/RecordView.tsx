@@ -7,6 +7,7 @@ import DiaryRecord from "../model";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
 
+
 /**
  * Component Name : RecordView
  * Data Input : ID of diary entry
