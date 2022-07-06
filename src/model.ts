@@ -48,23 +48,27 @@ export default class DiaryRecord{
 
     public toCSVRow(){
 
+        let comma = ',';
+        let doubleQuote = '"';
         let dateSeparator = '.';
+
         let dateString = this.date.getDate() + dateSeparator + 
                          (this.date.getMonth()+1) + dateSeparator + 
                          this.date.getFullYear();
-        let comma = ',';
+        
         let week = '';
         let project = '';
         let projectCategory ='';
         let will = '';
         let health = '';
         let money = '';
-        let score = '';
-        let doubleQuote = '"';
-        let title = this.title.replaceAll('"','""');
-        let comment = this.comment.replaceAll('"','""');
-        let hightlight = this.hightlight.replaceAll('"','""');
+        let score = '';       
+        let title = this.title.replaceAll( doubleQuote, doubleQuote + doubleQuote );
+        let comment = this.comment.replaceAll( doubleQuote, doubleQuote + doubleQuote );
+        let hightlight = this.hightlight.replaceAll( doubleQuote, doubleQuote + doubleQuote );
         let time = this.time.toString();
+
+      
 
         let csvString = doubleQuote + dateString + doubleQuote + comma +
                         doubleQuote + week + doubleQuote + comma +
