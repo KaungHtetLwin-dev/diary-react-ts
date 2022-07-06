@@ -79,32 +79,21 @@ export default function RecordView(props: { entryID: any }) {
       onTouchEnd={handleOnTouchEnd}
     >
       <CardContent sx={{ p: 0.5 }}>
+
         <Typography
           sx={{ fontSize: 14, m: 1 }}
-          color="text.primary"
+          color={entry.title ==='' ? 'text.secondary' : 'text.primary'}
           gutterBottom
         >
-          {entry.date.getDate() +
-            "." +
-            (entry.date.getMonth() + 1) +
-            "." +
-            entry.date.getFullYear()}
+          {entry.title ==='' ? 'No Title' : entry.title}
         </Typography>
         <Divider />
         <Typography
           sx={{ fontSize: 14, m: 1 }}
-          color="text.primary"
+          color={entry.comment ==='' ? 'text.secondary' : 'text.primary'}
           gutterBottom
         >
-          {entry.title}
-        </Typography>
-        <Divider />
-        <Typography
-          sx={{ fontSize: 14, m: 1 }}
-          color="text.primary"
-          gutterBottom
-        >
-          {entry.comment}
+          {entry.comment === '' ? 'No Comment': entry.comment}
         </Typography>
       </CardContent>
     </Card>

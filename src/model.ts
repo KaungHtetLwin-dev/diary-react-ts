@@ -50,7 +50,7 @@ export default class DiaryRecord{
 
         let dateSeparator = '.';
         let dateString = this.date.getDate() + dateSeparator + 
-                         this.date.getMonth() + dateSeparator + 
+                         (this.date.getMonth()+1) + dateSeparator + 
                          this.date.getFullYear();
         let comma = ',';
         let week = '';
