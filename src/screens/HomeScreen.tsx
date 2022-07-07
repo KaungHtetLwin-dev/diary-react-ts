@@ -108,13 +108,7 @@ export default function  HomeScreen () {
         </Container>
       
 
-      
-      {/* <Container maxWidth="sm" sx = {{mt:10}}>
-     
-        { entries.map( entry => <RecordView entryID={entry.id} key={entry.id} /> ) }
-     
-      </Container>
-       */}
+    
 
       <Fab
         color="primary"

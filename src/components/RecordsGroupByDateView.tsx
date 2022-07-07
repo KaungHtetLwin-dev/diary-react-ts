@@ -56,6 +56,7 @@ export default function RecordsGroupByDateView(props:any) {
 
   // setup ref for your usage
   const myRef = React.useRef();
+  const myRef2 = React.useRef();
 
   const refPassthrough = (el:any) => {
     // call useSwipeable ref prop with el
@@ -131,19 +132,19 @@ export default function RecordsGroupByDateView(props:any) {
             <ArrowForward/>
           </IconButton>
     </Stack>
+   
+    <Box style={{ height:'80vh',width:'100%', overflow: 'auto'}}>
     
-    <Box style={{ height:'80vh', overflow: 'auto'}}>
-     
         {
             groupedEntries[sortedDates[tabindex]]? 
             groupedEntries[sortedDates[tabindex]]
                 .map( (entry:any) => <RecordView entryID={entry.id} key={entry.id} /> )
             :<></> 
         }
-      
+     
       
     </Box>
-   
+    
 
     </div>
   )

@@ -3,7 +3,8 @@
 A simple diary app using React js.
 
 ## Features
-1. CRUD for diary record
-1. Export and Import records in csv format
-1. Organize diary records by date for viewing
-1. Delete all records from database
+1. [x] CRUD for diary record
+1. [x] Export records in csv format
+1. [x] Organize diary records by date for viewing
+1. [x] Delete all records from database
+
