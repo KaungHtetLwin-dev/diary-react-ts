@@ -16,9 +16,6 @@ import { saveAs } from 'file-saver';
 
 import Controller from '../controller';
 import DiaryRecord from "../model";
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
 import RecordsGroupByDateView from "../components/RecordsGroupByDateView";
 
 
@@ -27,12 +24,10 @@ export default function  HomeScreen () {
   const  navigate = useNavigate();
   let initEntries : Array<DiaryRecord> = [];
 
-  const [entries,setEntries] = React.useState(initEntries);
-  const [groupedEntries,setGroupedEntries] = React.useState(new Object());
-  const [tab,setTab] = React.useState('');
-  const forceUpdate = React.useReducer(() => ({}), {})[1] as () => void
+  
+  const [groupedEntries,setGroupedEntries] = React.useState(new Object()); 
   useEffect(()=> {
-     Controller.getController().readAll().then((data) => setEntries(data) )  ;
+     
      Controller.getController().readAllAndGroupByDate().then((data) => setGroupedEntries(data) ) ;
   },[])
 
@@ -85,7 +80,7 @@ export default function  HomeScreen () {
                   <ListItemButton 
                   onClick={async ()=>{
                     await Controller.getController().deleteAll();
-                    window.location.reload();
+                    setGroupedEntries({});
                     setdrawerState(!drawerState);
                   }}
                   >
@@ -109,7 +104,7 @@ export default function  HomeScreen () {
 
      
         <Container maxWidth="sm" sx = {{mt:10}}>
-          <RecordsGroupByDateView />
+          <RecordsGroupByDateView groupedEntries={groupedEntries} />
         </Container>
       
 

@@ -8,9 +8,10 @@ import Fade from '@mui/material/Fade';
 import { Container } from '@mui/system';
 
 
-export default function RecordsGroupByDateView() {
-    let initObj: Record<string,any>  = {};
-    const [groupedEntries,setGroupedEntries] = React.useState(initObj);
+export default function RecordsGroupByDateView(props:any) {
+
+    let groupedEntries = props.groupedEntries;
+    
     const [tabindex,setTabIndex] = React.useState(0);
    
 
@@ -32,11 +33,7 @@ export default function RecordsGroupByDateView() {
         return  dateB.getTime() -dateA.getTime()   ;
 
     });
-    
-    useEffect(()=> {
-        
-        Controller.getController().readAllAndGroupByDate().then((data) => setGroupedEntries(data) ) ;
-     },[]);
+  
 
      const handlers = useSwipeable(
        
