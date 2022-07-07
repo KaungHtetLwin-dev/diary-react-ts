@@ -5,6 +5,7 @@ import Controller from '../controller';
 import RecordView from './RecordView';
 import { useSwipeable } from "react-swipeable";
 import Fade from '@mui/material/Fade';
+import { Container } from '@mui/system';
 
 
 export default function RecordsGroupByDateView() {
@@ -65,6 +66,16 @@ export default function RecordsGroupByDateView() {
 
     // set myRef el so you can access it yourself
     myRef.current = el;
+  }
+
+  if(Object.keys(groupedEntries).length === 0){
+    return (
+      <Container>
+        <Typography>
+          No Record
+        </Typography>
+      </Container>
+    )
   }
     
   return (

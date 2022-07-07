@@ -30,6 +30,7 @@ export default function  HomeScreen () {
   const [entries,setEntries] = React.useState(initEntries);
   const [groupedEntries,setGroupedEntries] = React.useState(new Object());
   const [tab,setTab] = React.useState('');
+  const forceUpdate = React.useReducer(() => ({}), {})[1] as () => void
   useEffect(()=> {
      Controller.getController().readAll().then((data) => setEntries(data) )  ;
      Controller.getController().readAllAndGroupByDate().then((data) => setGroupedEntries(data) ) ;
@@ -72,7 +73,9 @@ export default function  HomeScreen () {
                       let BOM = '\ufeff';
                       var blob = new Blob([BOM + tableHeader +csvString], { type: 'text/csv;charset=utf-8;' });
                       saveAs(blob,'export.csv');
-                     
+
+
+                 
                
                       setdrawerState(!drawerState);
                     }}
@@ -82,7 +85,7 @@ export default function  HomeScreen () {
                   <ListItemButton 
                   onClick={async ()=>{
                     await Controller.getController().deleteAll();
-                    setEntries(initEntries);
+                    window.location.reload();
                     setdrawerState(!drawerState);
                   }}
                   >

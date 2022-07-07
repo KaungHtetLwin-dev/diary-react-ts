@@ -63,9 +63,12 @@ export default class DiaryRecord{
         let health = '';
         let money = '';
         let score = '';       
-        let title = this.title.replaceAll( doubleQuote, doubleQuote + doubleQuote );
-        let comment = this.comment.replaceAll( doubleQuote, doubleQuote + doubleQuote );
-        let hightlight = this.hightlight.replaceAll( doubleQuote, doubleQuote + doubleQuote );
+        // let title = this.title.replaceAll( doubleQuote, doubleQuote + doubleQuote );
+        // let comment = this.comment.replaceAll( doubleQuote, doubleQuote + doubleQuote );
+        // let hightlight = this.hightlight.replaceAll( doubleQuote, doubleQuote + doubleQuote );
+        let title = this.title.replace(new RegExp(doubleQuote,'g'), doubleQuote+ doubleQuote);
+        let comment = this.comment.replace(new RegExp(doubleQuote,'g'), doubleQuote+ doubleQuote);;
+        let hightlight = this.hightlight.replace(new RegExp(doubleQuote,'g'), doubleQuote+ doubleQuote);;
         let time = this.time.toString();
 
       
