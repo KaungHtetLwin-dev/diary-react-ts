@@ -159,7 +159,9 @@ export default function RecordsGroupByDateView(props:any) {
     <Box style={{ height:'80vh',width:'100%', overflow: 'auto'}} key={tabindex} {...handlers} ref={refPassthrough}> 
     
        
-            
+    
+          
+      
         {
             groupedEntries[sortedDates[tabindex]]? 
             <RecordsListView records={groupedEntries[sortedDates[tabindex]]}/>
@@ -168,6 +170,7 @@ export default function RecordsGroupByDateView(props:any) {
        
       
     </Box>
+      
     
     
 
