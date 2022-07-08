@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Controller from "../controller";
+
 import DiaryRecord from "../model";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
@@ -10,7 +10,7 @@ import { Divider } from "@mui/material";
 
 /**
  * Component Name : RecordView
- * Data Input : ID of diary entry
+ * Data Input : DiaryEntry Object
  * Function : Show record data in Card component
  *            If long press, switch to edit record view screen
  *
@@ -39,10 +39,8 @@ export default function RecordView(props:any) {
   }
 
   function handleOnClick() {
-    if (isLongPress.current) {
-      console.log("Is long press - not continuing.");
-      return;
-    }
+    if (isLongPress.current) 
+      return;    
     setAction("click");
   }
 
