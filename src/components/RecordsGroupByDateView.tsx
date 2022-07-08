@@ -1,5 +1,5 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import { Box, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Slide, SliderProps, Stack, Typography } from '@mui/material';
+import { Box, Collapse, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Slide, SliderProps, Stack, Typography } from '@mui/material';
 import React, { useEffect } from 'react'
 import Controller from '../controller';
 import RecordView from './RecordView';
@@ -8,11 +8,17 @@ import Fade from '@mui/material/Fade';
 import { Container } from '@mui/system';
 
 
+
+type Direction = 'left' | 'right' | 'up' | 'down';
+
 export default function RecordsGroupByDateView(props:any) {
 
     let groupedEntries = props.groupedEntries;
+    let initDirection: Direction = 'left';
     
     const [tabindex,setTabIndex] = React.useState(0);
+    const [slideDirection,setSlideDirection] = React.useState('left');
+    const [showSlide,setShowSlide] = React.useState(false);
    
 
     let sortedDates = Object.keys(groupedEntries);
@@ -41,6 +47,8 @@ export default function RecordsGroupByDateView(props:any) {
           if(eventData.dir === 'Left' && tabindex > 0){
            
             setTabIndex(tabindex-1);
+            setSlideDirection('right');
+            setTimeout(()=> setShowSlide(true),500);
                
                return;
               
@@ -48,6 +56,8 @@ export default function RecordsGroupByDateView(props:any) {
           if(eventData.dir == 'Right'  && tabindex < (sortedDates.length-1) ) {
             
             setTabIndex(tabindex+1);
+            setSlideDirection('left');
+            setTimeout(()=> setShowSlide(true),500);
             
             return;
           }
@@ -56,7 +66,7 @@ export default function RecordsGroupByDateView(props:any) {
 
   // setup ref for your usage
   const myRef = React.useRef();
-  const myRef2 = React.useRef();
+  
 
   const refPassthrough = (el:any) => {
     // call useSwipeable ref prop with el
@@ -77,7 +87,7 @@ export default function RecordsGroupByDateView(props:any) {
   }
     
   return (
-    <div {...handlers} ref={refPassthrough} > 
+    <div  > 
     
     <Stack direction="row" spacing={2} width="100%" justifyContent="space-between"  alignItems="center">
     <IconButton
@@ -86,7 +96,12 @@ export default function RecordsGroupByDateView(props:any) {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={()=> (tabindex < (sortedDates.length-1)) ? setTabIndex(tabindex+1): ''}
+            onClick={()=> {
+              tabindex < (sortedDates.length-1) ? setTabIndex(tabindex+1): '';
+              setSlideDirection('right');
+              setTimeout(()=> setShowSlide(true),500);
+            
+            }}
           >
             <ArrowBack/>
           </IconButton>
@@ -126,24 +141,40 @@ export default function RecordsGroupByDateView(props:any) {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={()=> tabindex > 0 ?setTabIndex(tabindex-1):''}
+            onClick={()=> {
+              tabindex > 0 ?setTabIndex(tabindex-1):'';
+              setSlideDirection('left');
+              setTimeout(()=> setShowSlide(true),500);
+
+            }}
             
           >
             <ArrowForward/>
           </IconButton>
     </Stack>
-   
-    <Box style={{ height:'80vh',width:'100%', overflow: 'auto'}}>
+
     
+    
+    <Box style={{ height:'80vh',width:'100%', overflow: 'auto'}} key={tabindex} {...handlers} ref={refPassthrough}> 
+    
+       
+            
         {
             groupedEntries[sortedDates[tabindex]]? 
             groupedEntries[sortedDates[tabindex]]
-                .map( (entry:any) => <RecordView entryID={entry.id} key={entry.id} /> )
+                .map( (entry:any) => 
+                {
+                return (
+                
+                  <RecordView entry={entry} key={entry.id} />
+                 )
+              } )
             :<></> 
         }
-     
+       
       
     </Box>
+    
     
 
     </div>

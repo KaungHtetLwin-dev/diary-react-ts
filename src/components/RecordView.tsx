@@ -17,16 +17,12 @@ import { Divider } from "@mui/material";
  *
  */
 
-export default function RecordView(props: { entryID: any }) {
-  let { entryID } = props;
-
-  let [entry, setEntry] = React.useState(new DiaryRecord());
+export default function RecordView(props:any) {
+ 
+  let entry = props.entry;
+  
   const navigate = useNavigate();
-  useEffect(() => {
-    Controller.getController()
-      .read(entryID)
-      .then((data) => setEntry(data || new DiaryRecord()));
-  }, []);
+  
 
   const [action, setAction] = useState("");
 
@@ -38,7 +34,7 @@ export default function RecordView(props: { entryID: any }) {
     timerRef.current = setTimeout(() => {
       isLongPress.current = true;
       setAction("longpress");
-      navigate("/edit-record/" + entryID);
+      navigate("/edit-record/" + entry.id);
     }, 500);
   }
 
