@@ -6,6 +6,7 @@ import RecordView from './RecordView';
 import { useSwipeable } from "react-swipeable";
 import Fade from '@mui/material/Fade';
 import { Container } from '@mui/system';
+import RecordsListView from './RecordsListView';
 
 
 
@@ -161,14 +162,7 @@ export default function RecordsGroupByDateView(props:any) {
             
         {
             groupedEntries[sortedDates[tabindex]]? 
-            groupedEntries[sortedDates[tabindex]]
-                .map( (entry:any) => 
-                {
-                return (
-                
-                  <RecordView entry={entry} key={entry.id} />
-                 )
-              } )
+            <RecordsListView records={groupedEntries[sortedDates[tabindex]]}/>
             :<></> 
         }
        
