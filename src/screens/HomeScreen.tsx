@@ -7,36 +7,33 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { Drawer, Stack, Tab, Tabs } from "@mui/material";
-import RecordView from "../components/RecordView";
+import { Drawer } from "@mui/material";
+
 import Container from "@mui/material/Container";
 import { List, ListItemButton, ListItemText } from "@mui/material";
-import { useNavigate} from 'react-router-dom';
-import { saveAs } from 'file-saver';
+import { useNavigate } from "react-router-dom";
+import { saveAs } from "file-saver";
 
-import Controller from '../controller';
+import Controller from "../controller";
 import DiaryRecord from "../model";
 import RecordsGroupByDateView from "../components/RecordsGroupByDateView";
 
-
-export default function  HomeScreen () {
+export default function HomeScreen() {
   const [drawerState, setdrawerState] = React.useState(false);
-  const  navigate = useNavigate();
-  let initEntries : Array<DiaryRecord> = [];
+  const navigate = useNavigate();
+  let initEntries: Array<DiaryRecord> = [];
 
-  
-  const [groupedEntries,setGroupedEntries] = React.useState(new Object()); 
-  useEffect(()=> {
-     
-     Controller.getController().readAllAndGroupByDate().then((data) => setGroupedEntries(data) ) ;
-  },[])
-
-  
+  const [groupedEntries, setGroupedEntries] = React.useState(new Object());
+  useEffect(() => {
+    Controller.getController()
+      .readAllAndGroupByDate()
+      .then((data) => setGroupedEntries(data));
+  }, []);
 
   return (
     <>
       <Box sx={{}}>
-        <AppBar >
+        <AppBar>
           <Toolbar>
             <IconButton
               size="large"
@@ -55,34 +52,44 @@ export default function  HomeScreen () {
                 onClose={() => setdrawerState(!drawerState)}
                 sx={{ width: "16rem" }}
               >
-                <List sx={{ width: "16rem", backgroundColor: "#0091EA" ,height:'100%', color:"#ffffff"}}>
-                 
-                  <ListItemText sx={{height:'20%', m:2}}>
-                  Diary App v1
+                <List
+                  sx={{
+                    width: "16rem",
+                    backgroundColor: "#0091EA",
+                    height: "100%",
+                    color: "#ffffff",
+                  }}
+                >
+                  <ListItemText sx={{ height: "20%", m: 2 }}>
+                    Diary App v1
                   </ListItemText>
                   <ListItemButton
-                     onClick={async ()=>{
+                    onClick={async () => {
                       let records = await Controller.getController().readAll();
-                      let csvString = records.map((record: { toCSVRow: () => any; }) => record.toCSVRow()).join('');
-                      let tableHeader='Date,Week,Project,Project Category,Highlight,Title,Time,Will,Health,Money,Score,Comment\n';                                        
-                      let BOM = '\ufeff';
-                      var blob = new Blob([BOM + tableHeader +csvString], { type: 'text/csv;charset=utf-8;' });
-                      saveAs(blob,'export.csv');
+                      let csvString = records
+                        .map((record: { toCSVRow: () => any }) =>
+                          record.toCSVRow()
+                        )
+                        .join("");
+                      let tableHeader =
+                        "Date,Week,Project,Project Category,Highlight,Title,Time,Will,Health,Money,Score,Comment\n";
+                      let BOM = "\ufeff";
+                      var blob = new Blob([BOM + tableHeader + csvString], {
+                        type: "text/csv;charset=utf-8;",
+                      });
+                      saveAs(blob, "export.csv");
 
-
-                 
-               
                       setdrawerState(!drawerState);
                     }}
-                    >
+                  >
                     <ListItemText primary="Export to CSV" />
                   </ListItemButton>
-                  <ListItemButton 
-                  onClick={async ()=>{
-                    await Controller.getController().deleteAll();
-                    setGroupedEntries({});
-                    setdrawerState(!drawerState);
-                  }}
+                  <ListItemButton
+                    onClick={async () => {
+                      await Controller.getController().deleteAll();
+                      setGroupedEntries({});
+                      setdrawerState(!drawerState);
+                    }}
                   >
                     <ListItemText primary="Clear all data" />
                   </ListItemButton>
@@ -100,28 +107,23 @@ export default function  HomeScreen () {
             </Typography>
           </Toolbar>
         </AppBar>
-     
 
-     
-        <Container maxWidth="sm" sx = {{mt:10}}>
+        <Container maxWidth="sm" sx={{ mt: 10 }}>
           <RecordsGroupByDateView groupedEntries={groupedEntries} />
         </Container>
-      
 
-    
-
-      <Fab
-        color="primary"
-        aria-label="add"
-        sx={{
-          position: "fixed",
-          bottom: 32,
-          right: 32,
-        }}
-        onClick = {() => navigate('/add-record',)}
-      >
-        <AddIcon />
-      </Fab>
+        <Fab
+          color="primary"
+          aria-label="add"
+          sx={{
+            position: "fixed",
+            bottom: 32,
+            right: 32,
+          }}
+          onClick={() => navigate("/add-record")}
+        >
+          <AddIcon />
+        </Fab>
       </Box>
     </>
   );
